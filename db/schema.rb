@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_22_224343) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_22_225531) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -24,9 +24,24 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_22_224343) do
     t.index ["user_id"], name: "index_posts_on_user_id"
   end
 
+  create_table "ratings", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.bigint "post_id", null: false
+    t.integer "value", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["post_id"], name: "index_ratings_on_post_id"
+    t.index ["user_id", "post_id"], name: "index_ratings_on_user_id_and_post_id", unique: true
+    t.index ["user_id"], name: "index_ratings_on_user_id"
+    t.check_constraint "value >= 1 AND value <= 5", name: "value_range"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "login", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
+
+  add_foreign_key "ratings", "posts"
+  add_foreign_key "ratings", "users"
 end
