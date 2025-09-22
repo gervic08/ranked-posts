@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class Post < ApplicationRecord
+class Rating < ApplicationRecord
   belongs_to :user
-  has_many :ratings
+  belongs_to :post
 end
