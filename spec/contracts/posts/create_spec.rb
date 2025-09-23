@@ -26,9 +26,9 @@ RSpec.describe Contracts::Posts::Create do
   end
 
   it 'fails if user_ip is invalid' do
-    params = valid_params.merge(user_ip: 'not_an_ip')
+    params = valid_params.merge(ip: 'not_an_ip')
     result = contract.call(params)
     expect(result).to be_failure
-    expect(result.errors[:user_ip]).to include('is not a valid IP address')
+    expect(result.errors[:ip]).to include('is not a valid IP address')
   end
 end
