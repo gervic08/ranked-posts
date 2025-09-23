@@ -5,6 +5,24 @@ module Api
     class PostsController < ApplicationController
       before_action :load_user, only: [:create]
 
+      def index
+        posts = Post.order(rating_average: :desc)
+        pagy, posts = pagy(posts, items: 10)
+        posts = posts.limit(params.fetch(:top, posts.count))
+
+        render json: PostBlueprint.render(
+          posts,
+          view: :index,
+          root: :posts,
+          meta: {
+            page: pagy.page,
+            per_page: pagy.vars[:items],
+            total_pages: pagy.pages,
+            total_count: pagy.count
+          }
+        ), status: :ok
+      end
+
       def create
         validation = Contracts::Posts::Create.new.call(hash_params)
 
@@ -13,7 +31,7 @@ module Api
           post = user.posts.create!(input)
           render json: PostBlueprint.render(post), status: :created
         else
-          render json: { errors: validation.errors.to_h }, status: :unprocessable_entity
+          render json: { errors: validation.errors.to_h }, status: :unprocessable_content
         end
       end
 

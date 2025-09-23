@@ -10,4 +10,8 @@ class PostBlueprint < Blueprinter::Base
   end
 
   association :user, blueprint: UserBlueprint
+
+  view :index do
+    excludes :created_at, :updated_at, :user_ip, :user
+  end
 end

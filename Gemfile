@@ -6,7 +6,7 @@ source 'https://rubygems.org'
 gem 'rails', '~> 8.0.2', '>= 8.0.2.1'
 
 # Use postgresql as the database for Active Record
-gem 'pg', '~> 1.1'
+gem 'pg'
 
 # Use the Puma web server [https://github.com/puma/puma]
 gem 'puma', '>= 5.0'
@@ -25,6 +25,9 @@ gem 'blueprinter'
 
 # Use dry-validation for validations [https://dry-rb.org/gems/dry-validation/]
 gem 'dry-validation', '~> 1.8'
+
+# Use Pagy for pagination
+gem 'pagy'
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

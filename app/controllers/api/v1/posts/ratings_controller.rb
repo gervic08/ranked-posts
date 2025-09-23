@@ -13,7 +13,7 @@ class Api::V1::Posts::RatingsController < ApplicationController
 
       render json: { post_average_rating: post.rating_average }, status: :created
     else
-      render json: { errors: validation.errors.to_h }, status: :unprocessable_entity
+      render json: { errors: validation.errors.to_h }, status: :unprocessable_content
     end
   end
 
