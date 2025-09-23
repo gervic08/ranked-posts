@@ -16,9 +16,9 @@ RSpec.describe Api::V1::PostsController do
 
       json = JSON.parse(response.body)
       expect(response).to have_http_status(:ok)
-      expect(json["posts"].first['title']).to eq('Post 1')
-      expect(json["posts"].second['title']).to eq('Post 2')
-      expect(json["posts"].third['title']).to eq('Post 3')
+      expect(json['posts'].first['title']).to eq('Post 1')
+      expect(json['posts'].second['title']).to eq('Post 2')
+      expect(json['posts'].third['title']).to eq('Post 3')
     end
 
     it 'includes pagination metadata' do
