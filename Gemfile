@@ -21,7 +21,7 @@ gem 'bootsnap', require: false
 gem 'thruster', require: false
 
 # Use Blueprinter for JSON serialization
-gem 'blueprinter', require: false
+gem 'blueprinter'
 
 # Use dry-validation for validations [https://dry-rb.org/gems/dry-validation/]
 gem 'dry-validation', '~> 1.8'
