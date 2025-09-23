@@ -1,24 +1,125 @@
-# README
+Ranked Posts API
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+A Ruby on Rails API application to manage posts and ratings, designed to handle large datasets efficiently.
 
-Things you may want to cover:
+Features
 
-* Ruby version
+Create posts associated with users and IP addresses.
 
-* System dependencies
+Rate posts with one rating per user per post.
 
-* Configuration
+Retrieve average post ratings.
 
-* Database creation
+Get top N posts by average rating.
 
-* Database initialization
+Query IPs shared by multiple users, along with their logins.
 
-* How to run the test suite
+Fully API-driven, supporting bulk data generation via curl.
 
-* Services (job queues, cache servers, search engines, etc.)
+Efficient and scalable handling of high-volume seeds with threads and batches.
 
-* Deployment instructions
+Tech Stack
 
-* ...
+Backend: Ruby on Rails 8
+
+Database: PostgreSQL (with inet for IP addresses and PostGIS support)
+
+Concurrent Processing: Threads for bulk seed creation
+
+Testing: RSpec (request specs for API endpoints)
+
+Data Faker: Faker gem for generating sample users, posts, and IPs
+
+API Endpoints
+Posts
+
+Create Post
+
+POST /api/v1/posts
+
+
+Parameters: title, body, user_login, ip
+
+Top Posts
+
+GET /api/v1/posts?top=N
+
+
+Returns top N posts by average rating
+
+Ratings
+
+Create Rating
+
+POST /api/v1/posts/ratings
+
+
+Parameters: post_id, user_id, value
+
+Reports
+
+IPs with Multiple Authors
+
+GET /api/v1/posts/ips
+
+
+Returns array of objects: { ip, user_logins[] }
+
+Data Seeding
+
+The project supports large-scale seeding using the API and curl.
+
+Sample configuration:
+
+num_users: 100
+num_ips: 50
+num_posts: 200_000
+rating_ratio: 0.75
+threads: 10
+batch_size: 20_000
+
+
+Seeds are executed in batches with multiple threads to optimize performance.
+
+Users are cached in memory to avoid duplicate creations.
+
+Ratings are calculated incrementally to avoid expensive AVG queries.
+
+Example curl request for creating a post
+curl -s -X POST http://localhost:3000/api/v1/posts \
+-H 'Content-Type: application/json' \
+-d '{
+"title": "Post Title",
+"body": "Post body",
+"user_login": "user1",
+"ip": "123.45.67.89"
+}'
+
+Performance
+
+Creating 1000 posts with ratings takes ~19 seconds on a local development setup.
+
+Bulk creation of 200k posts is handled in batches with threads to reduce total runtime.
+
+Installation
+
+Clone the repository:
+
+git clone <repo-url>
+cd ranked-posts-api
+
+
+Install dependencies:
+
+bundle install
+
+
+Setup the database:
+
+rails db:create db:migrate
+
+
+Seed the database:
+
+rails db:seed
+
