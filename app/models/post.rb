@@ -2,9 +2,13 @@
 
 class Post < ApplicationRecord
   belongs_to :user
-  has_many :ratings
+  has_many :ratings, dependent: :destroy
 
-  validates :title, presence: true, length: { maximum: 255 }
-  validates :body, presence: true, length: { maximum: 5000 }
-  validates :ip, presence: true
+  def add_rating!(user:, value:)
+    transaction do
+      ratings.create!(user: user, value: value)
+      new_average = ratings.average(:value).to_f
+      update_column(:rating_average, new_average)
+    end
+  end
 end
