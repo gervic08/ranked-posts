@@ -9,12 +9,14 @@ class Api::V1::Posts::RatingsController < ApplicationController
 
     if validation.success?
       rating_params = validation.to_h
-      rating = post.add_rating!(user: user, value: rating_params[:value])
+      post.add_rating!(user: user, value: rating_params[:value])
 
       render json: { post_average_rating: post.rating_average }, status: :created
     else
       render json: { errors: validation.errors.to_h }, status: :unprocessable_content
     end
+  rescue ActiveRecord::RecordNotUnique
+    render json: { error: 'User has already rated this post' }, status: :unprocessable_content
   end
 
   private

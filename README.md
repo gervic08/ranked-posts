@@ -14,9 +14,7 @@ A Ruby on Rails API application to manage posts and ratings, designed to handle 
 
 - Query IPs shared by multiple users, along with their logins.
 
-- Fully API-driven, supporting bulk data generation via curl.
-
-- Efficient and scalable handling of high-volume seeds with threads and batches.
+- Handles concurrent requests safely with pessimistic locking.
 
 ## Tech Stack
 
@@ -68,31 +66,23 @@ A Ruby on Rails API application to manage posts and ratings, designed to handle 
     num_ips: 50
     num_posts: 200_000
     rating_ratio: 0.75
-    threads: 10
-    batch_size: 20_000
+    threads: 20
   
-  Seeds are executed in batches with multiple threads to optimize performance.
-    
-  Users are cached in memory to avoid duplicate creations.
-    
-  Ratings are calculated incrementally to avoid expensive AVG queries.
-
-  ### Example curl request for creating a post
-    ```http
-    curl -s -X POST http://localhost:3000/api/v1/posts \
-    -H 'Content-Type: application/json' \
-    -d '{
-    "title": "Post Title",
-    "body": "Post body",
-    "user_login": "user1",
-    "ip": "123.45.67.89"
-    }'
-
-  ### Performance
-
-  Creating 1000 posts with ratings takes ~19 seconds on a local development setup.
+  Seeds are executed in batches with multiple threads using persistent HTTP connections for better performance.
   
-  Bulk creation of 200k posts is handled in batches with threads to reduce total runtime.
+  Users are created with unique logins enforced by database index.
+    
+  Ratings use pessimistic locking to ensure correct average calculations under concurrency.
+
+
+  ### Running seeds:
+  
+    # Terminal 1: Start the server
+    bin/rails server
+    
+    # Terminal 2: Run seeds
+    bin/rails db:seed
+
 
 ## Installation
 
