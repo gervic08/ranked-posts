@@ -26,14 +26,14 @@ A Ruby on Rails API application to manage posts and ratings, designed to handle 
   ### Posts
   
     - **Create Post**
-      ```http
+      
       POST /api/v1/posts
     
       
       Parameters: title, body, user_login, ip
     
     - **Top Posts**
-      ```http
+      
       GET /api/v1/posts?top=N
     
     
@@ -42,7 +42,7 @@ A Ruby on Rails API application to manage posts and ratings, designed to handle 
   ### Ratings
   
     - **Create Rating**
-      ```http
+      
       POST /api/v1/posts/ratings
   
   
@@ -50,7 +50,7 @@ A Ruby on Rails API application to manage posts and ratings, designed to handle 
   
   
   ### IPs with Multiple Authors
-    ```http
+    
     GET /api/v1/posts/ips
   
   
@@ -75,32 +75,24 @@ A Ruby on Rails API application to manage posts and ratings, designed to handle 
   Ratings use pessimistic locking to ensure correct average calculations under concurrency.
 
 
-  ### Running seeds:
-  
-    # Terminal 1: Start the server
-    bin/rails server
-    
-    # Terminal 2: Run seeds
-    bin/rails db:seed
-
 
 ## Installation
 
   ### Clone the repository:
-    ```http
+    
     git clone <repo-url>
     cd ranked-posts-api
 
 
    ### Install dependencies:
-    ```http
+    
     bundle install
 
   ### Setup the database:
-    ```http
+    
     rails db:create db:migrate
 
 
   ### Seed the database:
-    ```http
+    rails server 
     rails db:seed
